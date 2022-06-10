@@ -1,76 +1,77 @@
 package controllers;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-
+import java.io.UnsupportedEncodingException;
+import javax.xml.bind.JAXBException;
+import org.xml.sax.SAXException;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import models.Student;
-import repository.Repository;
-
+import models.BeautyCompetition;
+import repositories.Repository;
 
 @WebServlet("/registration")
 public class RegistrationServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	Repository repository;
-	
-	
-   
-    @Override
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public RegistrationServlet() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	Repository collection;
 	public void init(ServletConfig config) throws ServletException {
-		repository.getInstance();
+
+			collection= Repository.getInstance();
 	}
 
-
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher rd = request.getRequestDispatcher("/index.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("/RegistrationPage.jsp");
 		rd.forward(request, response);
 	}
 
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String facultyNumber = request.getParameter("faculty-number");
-		String name = request.getParameter("faculty-name");
-		String course = request.getParameter("course");
-		String specialty = request.getParameter("specialty");
-		String language = request.getParameter("language");
+		String name = request.getParameter("name");
+		String lastName = request.getParameter("lastName");
+		String age = request.getParameter("age");
+		String city = request.getParameter("city");
 		
-		response.setCharacterEncoding("UTF-8");
-		response.setContentType("text/html");
-		PrintWriter out = response.getWriter();
-		
-		if (facultyNumber.isEmpty() || facultyNumber == null || name.isEmpty() || name == null || course.isEmpty() 
-				|| course == null || specialty.isEmpty() || specialty == null || language.isEmpty() || language == null) {
-			out.print("<p> Не сте въвели всички полета. </p>");
-			RequestDispatcher rd = request.getRequestDispatcher("/index.jsp");
+		if (name == null || name.isEmpty() || lastName == null || lastName.isEmpty() || 
+				age == null || age.isEmpty() || city == null || city.isEmpty()) {
+			response.setCharacterEncoding("UTF-8");
+			response.setContentType("text/html");
+			PrintWriter writer = response.getWriter();
+			writer.print("<html><body><p>Не са въведени всички полета! </p></body></html>");
+			RequestDispatcher rd = request.getRequestDispatcher("/RegistrationPage.jsp");
 			rd.include(request, response);
-		} else {
-			Student student = new Student(facultyNumber, name, course, specialty, language);
-			if (repository.getStudentByFN(facultyNumber) == null) {
-				repository.addStudent(student);
-				//response.sendRedirect("profile");
-
-				HttpSession oldSession = request.getSession(false);
-				if (oldSession != null) {
-					oldSession.invalidate();
-				}
-				
-				HttpSession newSession = request.getSession();
-				newSession.setAttribute("loggedStudent", student);
-				
-				RequestDispatcher rd = request.getRequestDispatcher("/StudentProfile.jsp");
-				rd.forward(request, response);
-			} else {
-				out.print("<p> Студентът вече се е регистрирал </p>");
-				RequestDispatcher rd = request.getRequestDispatcher("/index.jsp");
-				rd.include(request, response);
-			}
 		}
-	}
+		else {
+			BeautyCompetition comp = new BeautyCompetition(name, lastName, age, city);
+			collection.addParticipant(comp);
+			
+			Cookie myCookie = new Cookie("ip","ip");
+			myCookie.setMaxAge(15); 
+			response.addCookie(myCookie);
+			response.sendRedirect("show");
+		}
+			
+	}	
 
 }
