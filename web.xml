@@ -4,6 +4,16 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+  <filter>
+  	<filter-name>ipChecker</filter-name>
+  	<display-name>ipChecker</display-name>
+  	<description></description>
+  	<filter-class>filters.ipChecker</filter-class>
+  </filter>
+  <filter-mapping>
+  	<filter-name>ipChecker</filter-name>
+  	<url-pattern>/ipChecker</url-pattern>
+  </filter-mapping>
   <servlet>
   	<servlet-name>RegistrationServlet</servlet-name>
   	<display-name>RegistrationServlet</display-name>
@@ -11,17 +21,17 @@
   	<servlet-class>controllers.RegistrationServlet</servlet-class>
   </servlet>
   <servlet>
-  	<servlet-name>StudentServlet</servlet-name>
-  	<display-name>StudentServlet</display-name>
+  	<servlet-name>Participants</servlet-name>
+  	<display-name>Participants</display-name>
   	<description></description>
-  	<servlet-class>controllers.StudentServlet</servlet-class>
+  	<servlet-class>controllers.Participants</servlet-class>
   </servlet>
   <servlet-mapping>
   	<servlet-name>RegistrationServlet</servlet-name>
   	<url-pattern>/RegistrationServlet</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-  	<servlet-name>StudentServlet</servlet-name>
-  	<url-pattern>/StudentServlet</url-pattern>
+  	<servlet-name>Participants</servlet-name>
+  	<url-pattern>/Participants</url-pattern>
   </servlet-mapping>
 </web-app>
