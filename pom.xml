@@ -4,12 +4,12 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.sit.tu-varna</groupId>
-  <artifactId>2b_kontrolno</artifactId>
+  <groupId>it.kontrolno2</groupId>
+  <artifactId>it2</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
 
-  <name>2b_kontrolno Maven Webapp</name>
+  <name>it2 Maven Webapp</name>
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 
@@ -26,8 +26,12 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
-    
-    <dependency>
+     <dependency>
+        <groupId>com.google.code.gson</groupId>
+        <artifactId>gson</artifactId>
+        <version>2.9.0</version>
+    </dependency>
+     <dependency>
     <groupId>jakarta.servlet</groupId>
     <artifactId>jakarta.servlet-api</artifactId>
     <version>5.0.0</version>
@@ -36,7 +40,7 @@
   </dependencies>
 
   <build>
-    <finalName>2b_kontrolno</finalName>
+    <finalName>it2</finalName>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
         <plugin>
